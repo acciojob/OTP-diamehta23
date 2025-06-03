@@ -57,22 +57,30 @@
 <script>
   const inputs = document.querySelectorAll('.code');
 
-  inputs.forEach((input, i) => {
+  inputs.forEach((input, index) => {
     input.addEventListener('keydown', (e) => {
-      if (e.key === "Backspace") {
-        if (input.value === "") {
-          if (i > 0) {
-            inputs[i - 1].focus();
-            inputs[i - 1].value = "";
+      // Allow navigation keys
+      const allowedKeys = ["Backspace", "ArrowLeft", "ArrowRight", "Tab"];
+      if (allowedKeys.includes(e.key)) {
+        // Backspace behavior
+        if (e.key === "Backspace") {
+          if (input.value === "") {
+            // Move focus to previous input if any
+            if (index > 0) {
+              inputs[index - 1].focus();
+              inputs[index - 1].value = "";
+              e.preventDefault();
+            }
+          } else {
+            // Clear current input but keep focus
+            input.value = "";
             e.preventDefault();
           }
-        } else {
-          input.value = "";
-          e.preventDefault();
         }
-      } else if (e.key.match(/^[0-9]$/)) {
-        input.value = ""; // clear current before setting new
-      } else if (e.key !== "Tab" && e.key !== "ArrowLeft" && e.key !== "ArrowRight") {
+        return; // allow these keys
+      }
+      // Block all except digits 0-9
+      if (!e.key.match(/^[0-9]$/)) {
         e.preventDefault();
       }
     });
@@ -80,12 +88,19 @@
     input.addEventListener('input', (e) => {
       const value = e.target.value;
       if (/^\d$/.test(value)) {
-        if (i < inputs.length - 1) {
-          inputs[i + 1].focus();
+        // Move to next input if exists
+        if (index < inputs.length - 1) {
+          inputs[index + 1].focus();
         }
       } else {
-        e.target.value = ""; // clear invalid input
+        // Clear invalid input (like paste)
+        e.target.value = "";
       }
+    });
+
+    // Optional: handle paste event to block paste of multiple characters
+    input.addEventListener('paste', (e) => {
+      e.preventDefault();
     });
   });
 </script>
