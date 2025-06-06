@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Verify Your Account</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f9fbfd;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-color: #f9f9fb;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -15,73 +19,75 @@
 
     .container {
       background-color: white;
-      padding: 40px;
       border: 2px solid black;
       border-radius: 12px;
-      text-align: center;
-      max-width: 600px;
+      padding: 40px 20px;
+      max-width: 700px;
       width: 100%;
+      text-align: center;
     }
 
     #verification_heading {
       font-size: 24px;
-      font-weight: bold;
+      font-weight: 600;
       margin-bottom: 10px;
     }
 
     #verification_subtext {
       font-size: 16px;
-      color: #555;
+      color: #333;
       margin-bottom: 30px;
     }
 
     .code-container {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
     .code {
-      width: 60px;
-      height: 60px;
-      font-size: 36px;
+      width: 70px;
+      height: 70px;
+      font-size: 48px;
+      font-weight: 400;
       text-align: center;
       border: 1px solid #ccc;
       border-radius: 8px;
       outline: none;
-      transition: border-color 0.3s;
-    }
-
-    .code:focus {
-      border-color: #333;
+      color: #5a5a5a;
     }
 
     .info {
-      margin-top: 20px;
+      background-color: #ececec;
+      color: #777;
       font-size: 14px;
-      background-color: #eee;
-      padding: 10px;
-      border-radius: 6px;
-      color: #666;
+      padding: 12px;
+      border-radius: 8px;
+      width: 80%;
+      margin: 0 auto;
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div id="verification_heading">Verify Your Account</div>
-    <div id="verification_subtext">We emailed you the six digit code to acciojob@email.com Enter the code below to confirm your email address.</div>
-    
-    <div class="code-container">
-      <input type="text" class="code" maxlength="1" />
-      <input type="text" class="code" maxlength="1" />
-      <input type="text" class="code" maxlength="1" />
-      <input type="text" class="code" maxlength="1" />
-      <input type="text" class="code" maxlength="1" />
-      <input type="text" class="code" maxlength="1" />
+    <div id="verification_subtext">
+      We emailed you the six digit code to acciojob@email.com Enter the code below to confirm your email address.
     </div>
 
-    <div class="info">This is design only. We didn't actually send you an email as we don't have your email, right?</div>
+    <div class="code-container">
+      <input type="text" maxlength="1" class="code" />
+      <input type="text" maxlength="1" class="code" />
+      <input type="text" maxlength="1" class="code" />
+      <input type="text" maxlength="1" class="code" />
+      <input type="text" maxlength="1" class="code" />
+      <input type="text" maxlength="1" class="code" />
+    </div>
+
+    <div class="info">
+      This is design only. We didn't actually send you an email as we don't have your email, right?
+    </div>
   </div>
 
   <script>
@@ -92,6 +98,10 @@
     inputs.forEach((input, index) => {
       input.addEventListener('input', (e) => {
         const value = e.target.value;
+        if (/[^0-9]/.test(value)) {
+          e.target.value = '';
+          return;
+        }
         if (value.length === 1 && index < inputs.length - 1) {
           inputs[index + 1].focus();
         }
@@ -102,8 +112,6 @@
           if (input.value === '' && index > 0) {
             inputs[index - 1].focus();
           }
-        } else if (!/[0-9]/.test(e.key) && e.key !== 'Tab') {
-          e.preventDefault(); // only digits allowed
         }
       });
     });
